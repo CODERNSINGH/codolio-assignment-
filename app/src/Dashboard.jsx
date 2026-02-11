@@ -12,7 +12,6 @@ import Modal from './components/Modal';
 function Dashboard({ user, onLogout }) {
     const { questions, setQuestions, addTopic, addSubTopic, deleteQuestion } = useQuestionStore();
     const [solvedQuestions, setSolvedQuestions] = useState({});
-    const [loading, setLoading] = useState(true);
     const [expandedTopics, setExpandedTopics] = useState({});
     const [currentView, setCurrentView] = useState('workspace'); // 'workspace' or 'solved'
     const [searchQuery, setSearchQuery] = useState('');
@@ -45,7 +44,6 @@ function Dashboard({ user, onLogout }) {
     useEffect(() => {
         const loadSolvedQuestions = async () => {
             if (!user) {
-                setLoading(false);
                 return;
             }
 
@@ -55,7 +53,6 @@ function Dashboard({ user, onLogout }) {
                 if (saved) {
                     setSolvedQuestions(JSON.parse(saved));
                 }
-                setLoading(false);
                 return;
             }
 
@@ -67,8 +64,6 @@ function Dashboard({ user, onLogout }) {
                 }
             } catch (error) {
                 console.error('Error loading solved questions:', error);
-            } finally {
-                setLoading(false);
             }
         };
 
@@ -186,16 +181,6 @@ function Dashboard({ user, onLogout }) {
     const totalQuestions = questions.length;
     const solvedCount = Object.keys(solvedQuestions).length;
     const progressPercentage = totalQuestions > 0 ? Math.round((solvedCount / totalQuestions) * 100) : 0;
-
-    // Show minimal loading only if still fetching user data
-    if (loading && user) {
-        return (
-            <div className="min-h-screen bg-gray-900 flex flex-col items-center justify-center gap-4">
-                <div className="w-12 h-12 border-4 border-gray-700 border-t-orange-500 rounded-full animate-spin"></div>
-                <p className="text-gray-400 text-lg">Please wait for sometime</p>
-            </div>
-        );
-    }
 
     return (
         <div className="min-h-screen bg-gray-900">
