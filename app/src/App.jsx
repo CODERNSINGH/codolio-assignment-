@@ -45,7 +45,12 @@ function App() {
   };
 
   if (!isInitialized) {
-    return null;
+    return (
+      <div className="min-h-screen bg-gray-900 flex flex-col items-center justify-center gap-4">
+        <div className="w-12 h-12 border-4 border-gray-700 border-t-orange-500 rounded-full animate-spin"></div>
+        <p className="text-gray-400 text-lg">Please wait for sometime</p>
+      </div>
+    );
   }
 
   const currentUser = user || guestUser;
